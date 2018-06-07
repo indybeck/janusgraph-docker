@@ -19,9 +19,9 @@ services:
       - "8182:8182"
       - "8184:8184"
     depends_on:
-      - db
-      - index
-  db:
+      - scylla
+      - elastic
+  scylla:
     image: scylladb/scylla:2.0.1
     ports:
      # http://docs.scylladb.com/kb/posix/
@@ -41,7 +41,7 @@ services:
      - "9100:9100"
     volumes:
      - ./data/scylla/data:/var/lib/scylla
-  index:
+  elastic:
     image: elasticsearch:5
     ports:
      - "9200:9200"
