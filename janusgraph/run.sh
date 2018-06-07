@@ -34,17 +34,22 @@ ELASTICSEARCH_STARTUP_TIMEOUT_S=60
 CASSANDRA_STARTUP_TIMEOUT_S=60
 
 wait_for_startup Elasticsearch \
-	index \
+	${ELASTIC_HOST} \
 	9200 \
 	$ELASTICSEARCH_STARTUP_TIMEOUT_S || {
     exit 1
 }
 
 wait_for_startup Cassandra \
-	db \
+	${SCYLLA_HOST} \
 	9042 \
 	$CASSANDRA_STARTUP_TIMEOUT_S || {
     exit 1
 }
 
+# substitute
+sed -i "s/elastic_hostname/${ELASTIC_HOSTNAME}/g" janusgraph.properties
+sed -i "s/scylla_hostname/${SCYLLA_HOSTNAME}/g" janusgraph.properties
+
+# run
 $BIN/gremlin-server.sh
